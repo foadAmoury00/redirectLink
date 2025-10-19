@@ -2,278 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile OS Detection</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: #4a6cf7;
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
-        .detection-area {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            text-align: center;
-            border: 2px dashed #dee2e6;
-        }
-        
-        .detection-area h2 {
-            color: #4a6cf7;
-            margin-bottom: 15px;
-        }
-        
-        .detection-result {
-            margin: 20px 0;
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #2c3e50;
-            min-height: 32px;
-        }
-        
-        .platform-icon {
-            font-size: 3rem;
-            margin: 15px 0;
-        }
-        
-        .link-container {
-            margin: 25px 0;
-        }
-        
-        .platform-link {
-            display: inline-block;
-            background: #4a6cf7;
-            color: white;
-            text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(74, 108, 247, 0.4);
-        }
-        
-        .platform-link:hover {
-            background: #3a5bd9;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(74, 108, 247, 0.5);
-        }
-        
-        .info-section {
-            background: #eef2ff;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 30px;
-        }
-        
-        .info-section h3 {
-            color: #4a6cf7;
-            margin-bottom: 15px;
-        }
-        
-        .info-section p {
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-        
-        .code-sample {
-            background: #2d3748;
-            color: #e2e8f0;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-            overflow-x: auto;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background: #f1f3f9;
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .detection-area {
-                padding: 20px;
-            }
-        }
-    </style>
+<script>
+function getMobileOperatingSystem() {
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      // Windows Phone must come first because its UA also contains "Android"
+    if (/windows phone/i.test(userAgent)) {
+        return "Windows Phone";
+    }
+
+    if (/android/i.test(userAgent)) {
+        return "Android";
+    }
+
+    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return "iOS";
+    }
+
+    return "unknown";
+}</script>
+
+<script>
+function DetectAndServe(){
+    let os = getMobileOperatingSystem();
+    if (os == "Android") {
+        window.location.href = "http://www.Androidexample.com"; 
+    } else if (os == "iOS") {
+        window.location.href = "http://www.IOSexample.com";
+    } else if (os == "Windows Phone") {
+        window.location.href = "http://www.WindowsPhoneexample.com";
+    } else {
+        window.location.href = "http://www.NowherLandexample.com";
+    }
+}
+</script>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Mobile OS Detection</h1>
-            <p>We've detected your device and provided a relevant link</p>
-        </div>
-        
-        <div class="content">
-            <div class="detection-area">
-                <h2>Device Detection Result</h2>
-                <div class="detection-result" id="detectionResult">
-                    Detecting your device...
-                </div>
-                <div class="platform-icon" id="platformIcon">
-                    📱
-                </div>
-                <div class="link-container">
-                    <a href="#" class="platform-link" id="platformLink">Visit Recommended Site</a>
-                </div>
-            </div>
-            
-            <div class="info-section">
-                <h3>How It Works</h3>
-                <p>This page uses JavaScript to detect your mobile operating system by analyzing your browser's user agent string.</p>
-                
-                <p>The detection script identifies:</p>
-                <ul style="margin-left: 20px; margin-bottom: 15px;">
-                    <li>Android devices</li>
-                    <li>iOS devices (iPhone, iPad, iPod)</li>
-                    <li>Windows Phone devices</li>
-                    <li>Other/unknown devices</li>
-                </ul>
-                
-                <p>Instead of automatically redirecting, we display a relevant link based on your device type. This approach gives you control over your navigation.</p>
-                
-                <div class="code-sample">
-                    // Detection function example:<br>
-                    function getMobileOperatingSystem() {<br>
-                    &nbsp;&nbsp;var userAgent = navigator.userAgent;<br>
-                    &nbsp;&nbsp;if (/windows phone/i.test(userAgent)) {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;return "Windows Phone";<br>
-                    &nbsp;&nbsp;}<br>
-                    &nbsp;&nbsp;if (/android/i.test(userAgent)) {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;return "Android";<br>
-                    &nbsp;&nbsp;}<br>
-                    &nbsp;&nbsp;if (/iPad|iPhone|iPod/.test(userAgent)) {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;return "iOS";<br>
-                    &nbsp;&nbsp;}<br>
-                    &nbsp;&nbsp;return "unknown";<br>
-                    }
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>Mobile OS Detection Example | Created for demonstration purposes</p>
-        </div>
-    </div>
-
-    <script>
-        function getMobileOperatingSystem() {
-            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-            // Windows Phone must come first because its UA also contains "Android"
-            if (/windows phone/i.test(userAgent)) {
-                return "Windows Phone";
-            }
-
-            if (/android/i.test(userAgent)) {
-                return "Android";
-            }
-
-            // iOS detection from: http://stackoverflow.com/a/9039885/177710
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                return "iOS";
-            }
-
-            return "unknown";
-        }
-        
-        function displayDetectionResult() {
-            let os = getMobileOperatingSystem();
-            let resultElement = document.getElementById('detectionResult');
-            let iconElement = document.getElementById('platformIcon');
-            let linkElement = document.getElementById('platformLink');
-            
-            let platformName, icon, link, linkText;
-            
-            switch(os) {
-                case "Android":
-                    platformName = "Android Device";
-                    icon = "🤖";
-                    link = "https://www.android.com/";
-                    linkText = "Visit Android Official Site";
-                    break;
-                case "iOS":
-                    platformName = "Apple iOS Device";
-                    icon = "🍎";
-                    link = "https://www.apple.com/ios/";
-                    linkText = "Visit iOS Official Site";
-                    break;
-                case "Windows Phone":
-                    platformName = "Windows Phone";
-                    icon = "📱";
-                    link = "https://www.microsoft.com/";
-                    linkText = "Visit Microsoft Official Site";
-                    break;
-                default:
-                    platformName = "Unknown Device";
-                    icon = "❓";
-                    link = "https://www.example.com/";
-                    linkText = "Visit Example Site";
-            }
-            
-            resultElement.textContent = `We've detected that you're using a ${platformName}`;
-            iconElement.textContent = icon;
-            linkElement.href = link;
-            linkElement.textContent = linkText;
-        }
-        
-        // Run detection when page loads
-        window.onload = displayDetectionResult;
-    </script>
+<body onload="DetectAndServe()">
 </body>
 </html>
